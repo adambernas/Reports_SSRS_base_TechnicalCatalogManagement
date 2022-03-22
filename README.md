@@ -1,12 +1,12 @@
-# Reports_SSRS_base_TechnicalCatalogManagement
+Ôªø# Reports_SSRS_base_TechnicalCatalogManagement
 
 Projekt: Reports SSRS base TechnicalCatalogManagement
 
 Raporty do bazy danych TechnicalCatalogManagement wykonane w SQL Server Reporting Services (SSRS)
 
-Sparametryzowane i dynamiczne raporty oparte na danych z widokÛw w repozytorium "Technical_Catalog_Management".
+Sparametryzowane i dynamiczne raporty oparte na danych z widok√≥w w repozytorium "Technical_Catalog_Management".
 
-Umoøliwiajπ wygodny i prosty w obs≥udze przeglπd raportÛw.
+Umo≈ºliwiajƒÖ wygodny i prosty w obs≈Çudze przeglƒÖd raport√≥w.
 
-Raporty oparte na danych przyk≥adowych wygenerowanych podczas tworzenia bazy na podstawie pliku "1. Baza danych TechnicalCatalogManagement" z repozytorium "Technical_Catalog_Management".
+Raporty oparte na danych przyk≈Çadowych wygenerowanych podczas tworzenia bazy na podstawie pliku "1. Baza danych TechnicalCatalogManagement" z repozytorium "Technical_Catalog_Management".
 
