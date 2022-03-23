@@ -13,6 +13,20 @@
     <DataSet Name="View_ReleaseReport">
       <Query>
         <DataSourceName>Technical_Catalog_Management</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@Grupa">
+            <Value>=Parameters!Grupa.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Typoszereg">
+            <Value>=Parameters!Typoszereg.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Producent">
+            <Value>=Parameters!Producent.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Zakres">
+            <Value>=Parameters!Zakres.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
         <CommandText>WITH TaskQty as 
 ( SELECT 
 	T.ObjectId	 as ObjectId, 
@@ -42,7 +56,7 @@ JOIN dbo.DocumentItem as DI
 -- Tworzenie Raportu głównego
 SELECT 
 A.DocumentValue as [Kod wydania],
-B.DocumentValue as [Nazwa],
+B.DocumentValue as [Wydanie],
 C.DocumentValue as [Zakres],
 D.DocumentValue as [Producent],
 E.DocumentValue as [Grupa],
@@ -83,15 +97,23 @@ Dzieli różnicę pomiędzy wszystkimi zadaniami a zadaniami otwartymi przez lic
 	(SELECT TQ.ObjectId, TQ.TaskQty, TQ.OpenTaskQty, 
 	(100*(TQ.TaskQty - TQ.OpenTaskQty) / TQ.TaskQty) as PctEnd
 	FROM TaskQty as TQ) as G
-ON f.ObjectId = g.ObjectId</CommandText>
+ON f.ObjectId = g.ObjectId
+WHERE
+E.DocumentValue IN (@Grupa) 
+AND
+F.DocumentValue IN (@Typoszereg) 
+AND
+D.DocumentValue IN (@Producent) 
+AND
+C.DocumentValue  IN (@Zakres)</CommandText>
       </Query>
       <Fields>
         <Field Name="Kod_wydania">
           <DataField>Kod wydania</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Nazwa">
-          <DataField>Nazwa</DataField>
+        <Field Name="Wydanie">
+          <DataField>Wydanie</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Zakres">
@@ -116,6 +138,64 @@ ON f.ObjectId = g.ObjectId</CommandText>
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="Producent_Table">
+      <Query>
+        <DataSourceName>Technical_Catalog_Management</DataSourceName>
+        <CommandText>SELECT Value as Producent
+  FROM dbo.DictionaryItem
+  WHERE IdDict = 2</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Producent">
+          <DataField>Producent</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Collation>Polish</Collation>
+    </DataSet>
+    <DataSet Name="Grupa_Table">
+      <Query>
+        <DataSourceName>Technical_Catalog_Management</DataSourceName>
+        <CommandText>SELECT Value as Grupa
+  FROM dbo.DictionaryItem
+  WHERE IdDict = 3</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Grupa">
+          <DataField>Grupa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Typoszereg_Table">
+      <Query>
+        <DataSourceName>Technical_Catalog_Management</DataSourceName>
+        <CommandText>SELECT DocumentValue as Typoszereg
+  FROM dbo.DocumentItem
+  WHERE IdDTI = 2</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Typoszereg">
+          <DataField>Typoszereg</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Collation>Polish</Collation>
+    </DataSet>
+    <DataSet Name="Zakres_Table">
+      <Query>
+        <DataSourceName>Technical_Catalog_Management</DataSourceName>
+        <CommandText>SELECT Value as Zakres
+  FROM dbo.DictionaryItem
+  WHERE IdDict = 1</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Zakres">
+          <DataField>Zakres</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
@@ -125,32 +205,32 @@ ON f.ObjectId = g.ObjectId</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>2.10312cm</Width>
+                  <Width>2.97202cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.89688cm</Width>
+                  <Width>3.95098cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.60583cm</Width>
+                  <Width>3.13076cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.73812cm</Width>
+                  <Width>3.13076cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>1.06302cm</Height>
+                  <Height>1.41552cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox22">
+                        <Textbox Name="Textbox1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Nazwa</Value>
+                                  <Value>Wydanie</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
@@ -163,7 +243,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox22</rd:DefaultName>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -296,18 +376,18 @@ ON f.ObjectId = g.ObjectId</CommandText>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>1.06302cm</Height>
+                  <Height>1.41552cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Nazwa">
+                        <Textbox Name="Wydanie">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Nazwa.Value</Value>
+                                  <Value>=Fields!Wydanie.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
@@ -318,7 +398,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Nazwa</rd:DefaultName>
+                          <rd:DefaultName>Wydanie</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -446,11 +526,11 @@ ON f.ObjectId = g.ObjectId</CommandText>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.9525cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox97">
+                        <Textbox Name="Textbox3">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -468,7 +548,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox97</rd:DefaultName>
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -522,17 +602,15 @@ ON f.ObjectId = g.ObjectId</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox99">
+                        <Textbox Name="Textbox2">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Średnia</Value>
-                                  <Style>
-                                    <Format>0.0 %</Format>
-                                  </Style>
+                                  <Value />
+                                  <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -540,7 +618,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox99</rd:DefaultName>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -596,11 +674,11 @@ ON f.ObjectId = g.ObjectId</CommandText>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.9525cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox109">
+                        <Textbox Name="Textbox4">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -618,7 +696,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox109</rd:DefaultName>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -672,17 +750,15 @@ ON f.ObjectId = g.ObjectId</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox27">
+                        <Textbox Name="Textbox9">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Średnia</Value>
-                                  <Style>
-                                    <Format>0.0 %</Format>
-                                  </Style>
+                                  <Value />
+                                  <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -690,7 +766,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox27</rd:DefaultName>
+                          <rd:DefaultName>Textbox9</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -746,11 +822,11 @@ ON f.ObjectId = g.ObjectId</CommandText>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.9525cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox123">
+                        <Textbox Name="Textbox7">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -768,7 +844,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox123</rd:DefaultName>
+                          <rd:DefaultName>Textbox7</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -822,17 +898,15 @@ ON f.ObjectId = g.ObjectId</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox28">
+                        <Textbox Name="Textbox10">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Średnia</Value>
-                                  <Style>
-                                    <Format>0.0 %</Format>
-                                  </Style>
+                                  <Value />
+                                  <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -840,7 +914,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox28</rd:DefaultName>
+                          <rd:DefaultName>Textbox10</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -896,11 +970,11 @@ ON f.ObjectId = g.ObjectId</CommandText>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.9525cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox17">
+                        <Textbox Name="Textbox8">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -918,7 +992,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox17</rd:DefaultName>
+                          <rd:DefaultName>Textbox8</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1057,7 +1131,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>3.4525cm</Size>
+                    <Size>3.89806cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox113">
                         <CanGrow>true</CanGrow>
@@ -1097,7 +1171,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>2.5cm</Size>
+                        <Size>3.5541cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox101">
                             <CanGrow>true</CanGrow>
@@ -1137,7 +1211,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>2.5cm</Size>
+                            <Size>3.21014cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox91">
                                 <CanGrow>true</CanGrow>
@@ -1194,7 +1268,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>3.4525cm</Size>
+                    <Size>3.89806cm</Size>
                     <CellContents>
                       <Textbox Name="Grupa1">
                         <CanGrow>true</CanGrow>
@@ -1241,7 +1315,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                         </SortExpression>
                       </SortExpressions>
                       <TablixHeader>
-                        <Size>2.5cm</Size>
+                        <Size>3.5541cm</Size>
                         <CellContents>
                           <Textbox Name="Producent1">
                             <CanGrow>true</CanGrow>
@@ -1288,7 +1362,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                             </SortExpression>
                           </SortExpressions>
                           <TablixHeader>
-                            <Size>2.5cm</Size>
+                            <Size>3.21014cm</Size>
                             <CellContents>
                               <Textbox Name="Typoszereg1">
                                 <CanGrow>true</CanGrow>
@@ -1341,7 +1415,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                         </TablixMember>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>2.5cm</Size>
+                            <Size>3.21014cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox21">
                                 <CanGrow>true</CanGrow>
@@ -1385,7 +1459,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                     </TablixMember>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>2.5cm</Size>
+                        <Size>3.5541cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox25">
                             <CanGrow>true</CanGrow>
@@ -1422,7 +1496,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>2.5cm</Size>
+                            <Size>3.21014cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox23">
                                 <CanGrow>true</CanGrow>
@@ -1464,7 +1538,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>3.4525cm</Size>
+                    <Size>3.89806cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox14">
                         <CanGrow>true</CanGrow>
@@ -1501,7 +1575,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>2.5cm</Size>
+                        <Size>3.5541cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox15">
                             <CanGrow>true</CanGrow>
@@ -1538,7 +1612,7 @@ ON f.ObjectId = g.ObjectId</CommandText>
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>2.5cm</Size>
+                            <Size>3.21014cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox16">
                                 <CanGrow>true</CanGrow>
@@ -1581,10 +1655,8 @@ ON f.ObjectId = g.ObjectId</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>View_ReleaseReport</DataSetName>
-            <Top>1.39912cm</Top>
-            <Left>0.52599cm</Left>
-            <Height>4.52604cm</Height>
-            <Width>18.79645cm</Width>
+            <Height>6.64104cm</Height>
+            <Width>23.84682cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1593,10 +1665,181 @@ ON f.ObjectId = g.ObjectId</CommandText>
           </Tablix>
         </ReportItems>
         <Height>2.61458in</Height>
-        <Style />
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+        </Style>
       </Body>
-      <Width>9.07601in</Width>
+      <Width>9.38851in</Width>
       <Page>
+        <PageHeader>
+          <Height>3.65125cm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox12">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="Grupa: " &amp; Join(Parameters!Grupa.Value, ", ") &amp; vbcrlf &amp; vbcrlf &amp;
+"Producent: " &amp; Join(Parameters!Producent.Value, ", ") &amp; vbcrlf &amp; vbcrlf &amp;
+"Typoszereg: " &amp; Join(Parameters!Typoszereg.Value, ", ") &amp; vbcrlf</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox12</rd:DefaultName>
+              <Top>1.76389cm</Top>
+              <Height>1.88736cm</Height>
+              <Width>23.84681cm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <VerticalAlign>Top</VerticalAlign>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox13">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Globals!ReportName</Value>
+                      <Style>
+                        <FontSize>12pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox13</rd:DefaultName>
+              <Height>1.06715cm</Height>
+              <Width>23.84681cm</Width>
+              <ZIndex>1</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <VerticalAlign>Middle</VerticalAlign>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox17">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Wybrane prarametry raportu:</Value>
+                      <Style>
+                        <TextDecoration>Underline</TextDecoration>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox17</rd:DefaultName>
+              <Top>1.10243cm</Top>
+              <Height>0.66146cm</Height>
+              <Width>23.84681cm</Width>
+              <ZIndex>2</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <VerticalAlign>Middle</VerticalAlign>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>Solid</Style>
+            </Border>
+            <BackgroundColor>LightGrey</BackgroundColor>
+          </Style>
+        </PageHeader>
+        <PageFooter>
+          <Height>2.09903cm</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox11">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="Data wykonania raportu: " &amp; Globals!ExecutionTime &amp; vbcrlf &amp;
+vbcrlf &amp;
+"Strona: " &amp; Globals!PageNumber &amp; " z " &amp; Globals!TotalPages</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox11</rd:DefaultName>
+              <Top>0.03528cm</Top>
+              <Height>2.06375cm</Height>
+              <Width>13.63431cm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <VerticalAlign>Middle</VerticalAlign>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BottomBorder>
+              <Style>Solid</Style>
+            </BottomBorder>
+            <LeftBorder>
+              <Style>Solid</Style>
+            </LeftBorder>
+            <RightBorder>
+              <Style>Solid</Style>
+            </RightBorder>
+            <BackgroundColor>LightGrey</BackgroundColor>
+          </Style>
+        </PageFooter>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
         <LeftMargin>2cm</LeftMargin>
@@ -1608,10 +1851,106 @@ ON f.ObjectId = g.ObjectId</CommandText>
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="Grupa">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>Grupa_Table</DataSetName>
+          <ValueField>Grupa</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>Wybierz Grupę</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Grupa_Table</DataSetName>
+          <ValueField>Grupa</ValueField>
+          <LabelField>Grupa</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="Typoszereg">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>Typoszereg_Table</DataSetName>
+          <ValueField>Typoszereg</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>Wybierz Typoszereg</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Typoszereg_Table</DataSetName>
+          <ValueField>Typoszereg</ValueField>
+          <LabelField>Typoszereg</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="Producent">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>Producent_Table</DataSetName>
+          <ValueField>Producent</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>Wybierz Producenta</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Producent_Table</DataSetName>
+          <ValueField>Producent</ValueField>
+          <LabelField>Producent</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+    <ReportParameter Name="Zakres">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>Zakres_Table</DataSetName>
+          <ValueField>Zakres</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>Wybierz Zakres</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Zakres_Table</DataSetName>
+          <ValueField>Zakres</ValueField>
+          <LabelField>Zakres</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
+  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfColumns>3</NumberOfColumns>
       <NumberOfRows>2</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>Grupa</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>Producent</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>Typoszereg</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>Zakres</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>

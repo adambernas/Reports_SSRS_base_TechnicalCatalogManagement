@@ -33,7 +33,7 @@ JOIN dbo.DocumentItem as DI
 -- Tworzenie Raportu głównego
 SELECT 
 A.DocumentValue as [Kod wydania],
-B.DocumentValue as [Nazwa],
+B.DocumentValue as [Wydanie],
 C.DocumentValue as [Zakres],
 D.DocumentValue as [Producent],
 E.DocumentValue as [Grupa],
@@ -81,8 +81,8 @@ ON f.ObjectId = g.ObjectId</CommandText>
         <DataField>Kod wydania</DataField>
         <rd:TypeName>System.String</rd:TypeName>
       </Field>
-      <Field Name="Nazwa">
-        <DataField>Nazwa</DataField>
+      <Field Name="Wydanie">
+        <DataField>Wydanie</DataField>
         <rd:TypeName>System.String</rd:TypeName>
       </Field>
       <Field Name="Zakres">
