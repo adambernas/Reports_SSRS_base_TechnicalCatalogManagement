@@ -6,9 +6,7 @@ Raporty do bazy danych TechnicalCatalogManagement wykonane w SQL Server Reportin
 
 Zaimplementowane raporty:
 
--Raport wykonania- wydania: Work in progress
-
--Raport wykonania- typoszeregi: Coming soon
+-Raport wykonania typoszeregi i wydania: Work in progress
 
 -Raport zadań - wydania: Coming soon
 
