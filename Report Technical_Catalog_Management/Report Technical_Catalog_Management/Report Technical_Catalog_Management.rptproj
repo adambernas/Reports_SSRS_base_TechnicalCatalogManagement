@@ -55,7 +55,7 @@
     <DataSource Include="TechnicalCatalogManagement.rds" />
   </ItemGroup>
   <ItemGroup>
-    <Report Include="Raprot wykonania - wydania.rdl" />
+    <Report Include="Raprot wykonania - typoszeregi i wydania.rdl" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />
 </Project>

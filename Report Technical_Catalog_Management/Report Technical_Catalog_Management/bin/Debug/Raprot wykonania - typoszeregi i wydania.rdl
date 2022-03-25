@@ -252,7 +252,7 @@ C.DocumentValue  IN (@Zakres)</CommandText>
                             <LeftBorder>
                               <Style>None</Style>
                             </LeftBorder>
-                            <BackgroundColor>Orange</BackgroundColor>
+                            <BackgroundColor>Khaki</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -2269,7 +2269,6 @@ vbcrlf &amp;
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox11</rd:DefaultName>
-              <Top>0cm</Top>
               <Height>2.13431cm</Height>
               <Width>13.63431cm</Width>
               <Style>
