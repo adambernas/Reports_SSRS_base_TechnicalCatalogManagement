@@ -16,7 +16,7 @@ Zaimplementowane raporty:
 
 Raport_in_SSMS:
 
-![Raport_in_SSMS](Raport_in_SSMS.png)
+![Raport_in_SSMS](Raport_in_SSMS.PNG)
 
 Raport_in_SSRS:
 
