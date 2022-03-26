@@ -171,8 +171,8 @@ C.DocumentValue  IN (@Zakres)</CommandText>
       <Query>
         <DataSourceName>Technical_Catalog_Management</DataSourceName>
         <CommandText>SELECT DocumentValue as Typoszereg
-  FROM dbo.DocumentItem
-  WHERE IdDTI = 2</CommandText>
+FROM dbo.DocumentItem
+WHERE IdDTI = 2</CommandText>
       </Query>
       <Fields>
         <Field Name="Typoszereg">
