@@ -14,13 +14,21 @@ Zaimplementowane raporty:
 
 -Raport wykonania typoszeregi i wydania
 
-Raport_in_SSMS:
+Raport_1_in_SSMS:
 
-![Raport_in_SSMS](Raport_in_SSMS.PNG)
+![Raport_1_in_SSMS](Raport_1_in_SSMS.PNG)
 
-Raport_in_SSRS:
+Raport_1_in_SSRS:
 
-![Raport_in_SSRS](Raport_in_SSRS.png)
+![Raport_1_in_SSRS](Raport_1_in_SSRS.png)
 
 
--Raport zadań - wydania: Work in progress
+-Raport zadań - wydania
+
+Raport_2_in_SSMS:
+
+![Raport_2_in_SSMS](Raport_2_in_SSMS.PNG)
+
+Raport_2_in_SSRS:
+
+![Raport_2_in_SSRS](Raport_2_in_SSRS.png)
